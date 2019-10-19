@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-  <router-view/>
+    <!-- <router-link to="/login" tag="button" replace>首页</router-link>
+    <router-link to="/404" tag="button" replace>荒原</router-link> -->
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
   </div>
 </template>
 
@@ -14,4 +18,7 @@
 
 <style>
   @import "assets/css/base.css";
+  /* #app {
+    position: relative;
+  } */
 </style>
