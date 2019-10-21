@@ -14,15 +14,25 @@
         </div>
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">Please check that the URL you entered is correct, or click the button below to return to the homepage.</div>
-        <a href="/login" class="bullshit__return-home">Back to home</a>
+        <a href="/login" class="bullshit__click-look-picture">Back to home</a>
+        <a href="#" class="bullshit__return-home" @click.prevent="dialogVisible=true">Click me</a>
       </div>
     </div>
+    <el-dialog :visible.sync="dialogVisible" title="Just Have fun">
+      <img :src="ewizardClap" class="pan-img">
+    </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Page404',
+  data() {
+    return {
+      ewizardClap: 'https://wpimg.wallstcn.com/007ef517-bafd-4066-aae4-6883632d9646',
+      dialogVisible: false
+    }
+  },
   computed: {
     message() {
       return 'The webmaster said that you can not enter this page...'
@@ -32,6 +42,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.pan-img {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+}
 .wscn-http404-container{
   transform: translate(-50%,-50%);
   position: absolute;
@@ -194,7 +209,8 @@ export default {
       animation-delay: 0.2s;
       animation-fill-mode: forwards;
     }
-    &__return-home {
+    &__return-home,
+    &__click-look-picture {
       display: block;
       float: left;
       width: 110px;

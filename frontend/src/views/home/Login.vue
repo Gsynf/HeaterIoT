@@ -1,4 +1,11 @@
 <template>
+  <div>
+    <header>
+      <div >
+		    <el-image class="logo" :src="logo_path" alt=""></el-image>
+		    <el-image class="name" :src="name_path" alt=""></el-image>
+    </div>
+    </header>
     <el-form label-width="100px" class="demo-ruleForm login-container">
         <h3 class="title">系统登录</h3>
             <el-link class="loginByMsg" type="primary">短信快捷登录</el-link>
@@ -13,11 +20,20 @@
             <el-button type="primary"
             @click.native.prevent="loginSubmit" :loading="logining">登录</el-button>
     </el-form>
-
+  </div>
 </template>
 
 <script>
+const logo_path = require('assets/img/logo.png')
+const name_path = require('assets/img/name.png')
+
 export default {
+  data() {
+    return {
+      logo_path,
+      name_path
+    }
+  },
   methods: {
     loginSubmit() {
       this.$router.replace('/device')
@@ -27,24 +43,6 @@ export default {
 </script>
 
 <style>
-		/*css初始化*/
-		* {
-			margin: 0;
-			padding: 0;  /*清除内外边距*/
-		}
-		ul {
-			list-style: none; 	/*去除列表默认的小点*/
-		}
-		.clearfix:before, .clearfix:after {	/*清除浮动*/
-			display: table;
-			content: "";
-		}
-		.clearfix:after {
-			clear: both;
-		}
-		.clearfix {
-			*zoom: 1;
-		}
 body{
     background-image: url(~assets/img/home/bg.jpg);
     background-repeat: no-repeat;
@@ -56,7 +54,22 @@ body{
     padding: 0px;
     /* 当内容溢出元素框时,内容会被修剪,并且其余内容是不可见的 */
     overflow: hidden;
+    position: absolute;
 }
+.logo {
+			/* float: left; */
+      position: relative;
+      left: 250px;
+      top: 30px;
+      width: 15%
+		}
+.name {
+      position: relative;
+      left: 300px;
+      top: 20px;
+      width: 50%
+
+		}
 .login-container {
     /* 处理圆角，W3C标准 */
     border-radius: 5px;
@@ -66,14 +79,14 @@ body{
     -moz-border-radius: 5px;
     /* 规定背景的绘制区域 */
     background-clip: padding-box;
-    margin: 200px auto;
+    margin: 80px 100px;
     width: 800px;
     height: 500px;
     padding: 35px 35px 15px 35px;
-    background: #fff;
-    border: 1px solid #eaeaea;
+    background: rgba(182, 175, 175, 0.3);
+    border: 1px solid #908888;
     /* 盒子阴影 */
-    box-shadow: 2px 2px 25px #cac6c6;
+    box-shadow: 2px 2px 25px #908888;
 }
 .login-container .title {
     margin: 0px auto 40px auto;
