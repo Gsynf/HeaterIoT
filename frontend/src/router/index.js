@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 const NotFound  = () => import('views/NotFound.vue');
 const Login = () => import('views/home/Login.vue');
 const MsgLogin = () => import('views/home/MsgLogin.vue')
-
+const Register = () => import('views/home/Register.vue')
 // 1.安装插件
 Vue.use(VueRouter)
 
@@ -22,6 +22,10 @@ const routes = [
   {
     path: '/msglogin',
     component: MsgLogin
+  },
+  {
+    path: '/register',
+    component: Register
   },
   {
     path: '/404',

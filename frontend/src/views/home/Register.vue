@@ -11,23 +11,33 @@
     <el-row type="flex" class="mainbody">
       <el-col class="login-container">
         <el-form
-          :model="ruleForm"
-          :rules="rules"
-          ref="ruleForm"
-          class="demo-ruleForm">
-            <h3 class="title">系统登录</h3>
-            <el-link href="/msglogin" class="loginByMsg" type="primary">短信快捷登录</el-link>
-            <el-form-item  class="tel" prop="tel">手机号码：
-              <el-input  v-model="ruleForm.tel" auto-complete="off" placeholder="请输入您的手机号码"></el-input>
+          :model="ruleForm3"
+          :rules="rules3"
+          ref="ruleForm3"
+          class="demo-ruleForm"
+          label-position="right"
+          label-width="80px">
+            <h3 class="title">欢迎注册</h3>
+            <el-link href="/login" class="backlogin" type="primary">返回密码登录</el-link>
+            <el-form-item  class="username" prop="username" label="用户名">
+              <el-input  v-model="ruleForm3.username" auto-complete="off" placeholder="请输入用户名（2-6位）"></el-input>
             </el-form-item>
-            <el-form-item  class="password" prop="pass">密码：
-              <el-input  v-model="ruleForm.pass" auto-complete="off" placeholder="请输入您的密码" show-password></el-input>
+            <el-form-item  class="tel" prop="tel" label="手机号码">
+              <el-input  v-model="ruleForm3.tel" auto-complete="off" placeholder="请输入您的手机号码"></el-input>
             </el-form-item>
-            <el-link href="/register" class="registerNow" type="primary" >没有账户？立即注册</el-link>
-            <el-link href="/losepwd" class="losepwd" type="primary">忘记密码？</el-link>
+            <el-form-item  class="code" prop="smscode" label="验证码">
+              <el-input  class="codeinput" v-model="ruleForm3.smscode" placeholder="请输入验证码" ></el-input>
+              <el-button class="codebtn" type="primary" :disabled='isDisabled' @click="sendCode">{{buttonText}}</el-button>
+            </el-form-item>
+          <el-form-item  class="password" prop="pass" label="登录密码">
+              <el-input  v-model="ruleForm3.pass" auto-complete="off" placeholder="请输入您的密码（4-8位）" show-password></el-input>
+            </el-form-item>
+            <el-form-item  class="checkPass" prop="checkPass" label="确认密码">
+              <el-input  v-model="ruleForm3.checkPass" auto-complete="off" placeholder="请再次输入您的密码（4-8位）" show-password></el-input>
+            </el-form-item>
             <el-form-item>
               <el-button class="btn" type="primary"
-                         @click.native.prevent="msgLoginSubmit" :loading="logining">登录</el-button>
+                         @click.native.prevent="registerSubmit('ruleForm3')" :loading="logining">注册</el-button>
             </el-form-item>
         </el-form>
       </el-col>
@@ -39,11 +49,21 @@
 
 const logo_path = require('assets/img/logo.png')
 const name_path = require('assets/img/name.png')
-import { requestLogin } from '../../network/api';
+import {requestMsgValidate, requestRegister} from '../../network/api';
 
 
 export default {
   data() {
+    // <!--验证用户名-->
+    let checkUsername = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入用户名"))
+      } else if (!this.checkProfileName(value)) {
+        callback(new Error('用户名不合法'))
+      } else {
+        callback()
+      }
+    };
     // <!--验证手机号是否合法-->
     let checkTel = (rule, value, callback) => {
       if (value === '') {
@@ -55,12 +75,35 @@ export default {
       }
     };
     // <!--验证密码-->
-    let checkPass = (rule, value, callback) => {
+    let checkPwd = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"))
       } else if (!this.checkPassword(value)) {
         callback(new Error('密码不合法'))
       } else {
+        if (this.ruleForm3.checkPass !== "") {
+          this.$refs.ruleForm3.validateField("checkPass");
+        }
+        callback()
+      }
+    };
+    // <!--二次验证密码-->
+    let checkPwd2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.ruleForm3.pass) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
+    //  <!--验证码是否为空-->
+    let checkSmscode = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入手机验证码'))
+      } else if (!this.checkValidateCode(value)) {
+        callback(new Error('短信验证码不合法'))
+      }else {
         callback()
       }
     };
@@ -68,47 +111,103 @@ export default {
       logining: false,
       logo_path,
       name_path,
-      ruleForm: {
-        tel: '18813058359',
-        pass: '12345'
+      ruleForm3: {
+        username: '',
+        tel: '',
+        smscode: "",
+        pass: '',
+        checkPass: '',
       },
-      rules: {
+      rules3: {
+        username: [
+          { validator: checkUsername, trigger: 'change' }
+        ],
         tel: [
           { validator: checkTel, trigger: 'change' },
         ],
+        smscode: [
+          { validator: checkSmscode, trigger: 'change' }
+        ],
         pass: [
-          { validator: checkPass, trigger: 'change' },
-        ]
+          { validator: checkPwd, trigger: 'change' },
+        ],
+        checkPass: [
+          { validator: checkPwd2, trigger: 'change' }
+        ],
       },
+      buttonText: '发送验证码',
+      isDisabled: false, // 是否禁止点击发送验证码按钮
+      flag: true
       //checked: true
     };
   },
   methods: {
-    //提交登录
-    msgLoginSubmit(ev) {
-        this.$refs.ruleForm.validate((valid) => {
+    // <!--发送验证码-->
+    sendCode () {
+      let msgRegisterParams = {
+        "telephoneNum": this.ruleForm3.tel,
+      };
+      if (this.checkMobile(msgRegisterParams.telephoneNum)) {
+        requestMsgValidate(msgRegisterParams)
+          .then(data => {
+            this.logining = false;
+            //NProgress.done();
+            if (data.success !== true) {
+              this.$message({
+                message: data.message,
+                type: 'error'
+              });
+            } else {
+              setTimeout(() => {
+                alert('短信验证码发送成功')
+              }, 400);
+            }
+          });
+        let time = 6;
+        this.buttonText = '已发送';
+        this.isDisabled = true;
+        if (this.flag) {
+          this.flag = false;
+          let timer = setInterval(() => {
+            time--;
+            this.buttonText = time + ' 秒';
+            if (time === 0) {
+              clearInterval(timer);
+              this.buttonText = '重新获取';
+              this.isDisabled = false;
+              this.flag = true;
+            }
+          }, 1000)
+        }
+      }
+    },
+    //提交注册
+    registerSubmit(ruleForm3) {
+        this.$refs.ruleForm3.validate((valid) => {
           if (valid) {
             this.logining = true;
             //NProgress.start();
-            let loginParams = {
-              "telephoneNum": this.ruleForm.tel,
-              "userPassword": this.ruleForm.pass
+            let registerParams = {
+              "userName": this.ruleForm3.username,
+              "telephoneNum": this.ruleForm3.tel,
+              "smsCode": this.ruleForm3.smscode,
+              "userPassword": this.ruleForm3.pass,
+              "userRight": 0
             };
-              requestLogin(loginParams)
+              requestRegister(registerParams)
                 .then(data => {
                   this.logining = false;
                   //NProgress.done();
-                  if (data.code !== 100) {
+                  if (data.success !== true) {
                     this.$message({
                       message: data.message,
                       type: 'error',
                     });
                   } else {
                     setTimeout(() => {
-                      alert('登录成功')
+                      alert('注册成功')
                     }, 400);
-                    sessionStorage.setItem('userId', JSON.stringify(data.content.userId));
-                    this.$router.push({path: '/device'});
+                    this.$router.push({path: '/login'});
                   }
                 });
           } else {
@@ -117,9 +216,18 @@ export default {
             }
         });
       },
+    // 验证用户名密码2-8位
+    checkProfileName(str) {
+      let re = /^.{2,8}$/;
+      if (re.test(str)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     // 验证手机号
     checkMobile(str) {
-      let re = /^1\d{10}$/
+      let re = /^1\d{10}$/;
       if (re.test(str)) {
         return true;
       } else {
@@ -128,7 +236,16 @@ export default {
     },
     // 验证密码4-8位
     checkPassword(str) {
-      let re = /^.{4,8}$/
+      let re = /^.{4,8}$/;
+      if (re.test(str)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    // 验证短信验证码长度必须为6位
+    checkValidateCode(str) {
+      let re = /^.{6}$/;
       if (re.test(str)) {
         return true;
       } else {
@@ -153,25 +270,17 @@ body{
     overflow: hidden;
     position: absolute;
 }
-.headline,
-.mainbody {
+.headline {
   margin-top: 35px;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 .logo {
-      /* position: relative;
-      left: 250px;
-      top: 30px; */
       width: 15%
 		}
 .name {
-      /* position: relative;
-      left: 300px;
-      top: 20px; */
       width: 50%
 
 		}
-
 .login-container {
     /* 处理圆角，W3C标准 */
     border-radius: 5px;
@@ -182,7 +291,7 @@ body{
     /* 规定背景的绘制区域 */
     background-clip: padding-box;
     width: 800px;
-    height: 575px;
+    height: 600px;
     padding: 35px 35px 15px 35px;
     background: rgba(0, 0, 0, .3);
     /* background: rgba(182, 175, 175, 0.3); */
@@ -195,28 +304,42 @@ body{
     top: 35px;
 }
 .demo-ruleForm {
-  height: 500px;
+  height: 550px;
 }
 .title {
-    margin: 0px auto 40px auto;
+    margin: 0px auto 20px auto;
     text-align: center;
     color: #FF9B1F;
 }
-.loginByMsg,
-.losepwd {
+.backlogin {
   right:20px;
   float: right;
 }
-.registerNow {
-  left: 20px;
+.el-form-item__label {
+  color: #FF9B1F;
 }
+.username,
 .tel,
-.password {
-  margin: 80px 0px 80px 0px;
-  color: #FF9B1F
+.password,
+.checkPass,
+.code{
+  margin: 50px 0px 30px 0px;
+  color: #FF9B1F;
+}
+.el-input {
+  width: 90%;
+  display: inline-block;
+}
+.codeinput {
+  width: 50%;
+  display: inline-block;
+}
+.codebtn {
+  width: 150px;
+  display: inline-block;
+  margin-left: 100px;
 }
 .btn {
-  margin: 15px 45% 35px 45%;
+  margin: 0px 50% 35px 40%;
 }
-
 </style>

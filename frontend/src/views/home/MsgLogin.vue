@@ -13,20 +13,22 @@
         <el-form
           :model="ruleForm2"
           :rules="rules2"
-          ref="ruleForm"
-          class="demo-ruleForm">
+          ref="ruleForm2"
+          class="demo-ruleForm"
+          label-position="top"
+          label-width="80px">
             <h3 class="title">短信验证码登录</h3>
             <el-link href="/login" class="backlogin" type="primary">返回密码登录</el-link>
-            <el-form-item  class="tel" prop="tel">手机号码：
+            <el-form-item  class="tel" prop="tel" label="手机号码">
                 <el-input  v-model="ruleForm2.tel" auto-complete="off" placeholder="请输入您的手机号码"></el-input>
             </el-form-item>
-            <el-form-item  class="code" prop="smscode">验证码：
+            <el-form-item  class="code" prop="smscode" label="验证码">
                 <el-input  v-model="ruleForm2.smscode" placeholder="请输入验证码" ></el-input>
                 <el-button type="primary" :disabled='isDisabled' @click="sendCode">{{buttonText}}</el-button>
             </el-form-item>
             <el-form-item>
               <el-button class="btn" type="primary"
-                         @click.native.prevent="loginSubmit" :loading="logining">登录</el-button>
+                         @click.native.prevent="msgLoginSubmit('ruleForm2')" :loading="logining">登录</el-button>
             </el-form-item>
         </el-form>
       </el-col>
@@ -38,7 +40,7 @@
 
 const logo_path = require('assets/img/logo.png')
 const name_path = require('assets/img/name.png')
-import {requestMsgValidate, requestMsgLogin} from '../../network/api';
+import {requestMsgLoginValidate, requestMsgLogin} from '../../network/api';
 
 export default {
   data() {
@@ -90,7 +92,7 @@ export default {
         "telephoneNum": this.ruleForm2.tel,
       };
       if (this.checkMobile(msgLoginParams.telephoneNum)) {
-        requestMsgValidate(msgLoginParams)
+        requestMsgLoginValidate(msgLoginParams)
           .then(data => {
             this.logining = false;
             //NProgress.done();
@@ -124,8 +126,8 @@ export default {
       }
     },
     // <!--提交登录-->
-    loginSubmit(formName) {
-      this.$refs.ruleForm.validate(valid => {
+    msgLoginSubmit(ruleForm2) {
+      this.$refs.ruleForm2.validate(valid => {
         if (valid) {
           this.logining = true;
           //NProgress.start();
@@ -158,7 +160,7 @@ export default {
     },
     // 验证手机号
     checkMobile(str) {
-      let re = /^1\d{10}$/
+      let re = /^1\d{10}$/;
       if (re.test(str)) {
         return true;
       } else {
@@ -167,7 +169,7 @@ export default {
     },
     // 验证短信验证码长度必须为6位
     checkValidateCode(str) {
-      let re = /^.{6}$/
+      let re = /^.{6}$/;
       if (re.test(str)) {
         return true;
       } else {
@@ -192,21 +194,14 @@ body{
     overflow: hidden;
     position: absolute;
 }
-.headline,
-.mainbody {
+.headline {
   margin-top: 35px;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 .logo {
-      /* position: relative;
-      left: 250px;
-      top: 30px; */
       width: 15%
 		}
 .name {
-      /* position: relative;
-      left: 300px;
-      top: 20px; */
       width: 50%
 		}
 
@@ -220,7 +215,7 @@ body{
     /* 规定背景的绘制区域 */
     background-clip: padding-box;
     width: 800px;
-    height: 575px;
+    height: 600px;
     padding: 35px 35px 15px 35px;
     background: rgba(0, 0, 0, .3);
     /* background: rgba(182, 175, 175, 0.3); */
@@ -239,6 +234,9 @@ body{
     margin: 0px auto 40px auto;
     text-align: center;
     color: #FF9B1F;
+}
+.el-form-item__label {
+  color: #FF9B1F;
 }
 .backlogin {
   right:20px;
