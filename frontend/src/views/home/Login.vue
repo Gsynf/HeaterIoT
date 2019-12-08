@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-row type="flex" justify="center">
+    <el-row type="flex" justify="center" class="headline">
       <el-col :span="12" class="logo">
 		      <el-image :src="logo_path" alt=""></el-image>
       </el-col>
@@ -8,27 +8,26 @@
 		      <el-image  :src="name_path" alt=""></el-image>
       </el-col>
     </el-row>
-    <el-row type="flex">
-      <el-col class="demo-ruleForm login-container">
-        <el-form >
+    <el-row type="flex" class="mainbody">
+      <el-col class="login-container">
+        <el-form
+          :model="ruleForm"
+          :rules="rules"
+          ref="ruleForm"
+          class="demo-ruleForm">
             <h3 class="title">系统登录</h3>
-            <el-link class="loginByMsg" type="primary">短信快捷登录</el-link>
-            <el-form-item  class="username" prop="username">用户名：
-                <el-input  placeholder="请输入您的用户名"></el-input>
+            <el-link href="/msglogin" class="loginByMsg" type="primary">短信快捷登录</el-link>
+            <el-form-item  class="tel" prop="tel">手机号码：
+              <el-input  v-model="ruleForm.tel" auto-complete="off" placeholder="请输入您的手机号码"></el-input>
             </el-form-item>
-            <el-form-item  class="password" prop="password">密码：
-                <el-input  placeholder="请输入您的密码" show-password></el-input>
+            <el-form-item  class="password" prop="pass">密码：
+              <el-input  v-model="ruleForm.pass" auto-complete="off" placeholder="请输入您的密码" show-password></el-input>
             </el-form-item>
             <el-link href="/register" class="registerNow" type="primary" >没有账户？立即注册</el-link>
-            <el-link class="losepwd" type="primary">忘记密码？</el-link>
+            <el-link href="/losepwd" class="losepwd" type="primary">忘记密码？</el-link>
             <el-form-item>
-              <el-row type="flex" justify="center">
-                <el-col :span="4">
-                  <el-button class="btn" type="primary"
-                    @click.native.prevent="loginSubmit" :loading="logining">登录</el-button>
-                </el-col>
-              </el-row>
-
+              <el-button class="btn" type="primary"
+                         @click.native.prevent="msgLoginSubmit" :loading="logining">登录</el-button>
             </el-form-item>
         </el-form>
       </el-col>
@@ -37,19 +36,104 @@
 </template>
 
 <script>
+
 const logo_path = require('assets/img/logo.png')
 const name_path = require('assets/img/name.png')
+import { requestLogin } from '../../network/api';
+
 
 export default {
   data() {
+    // <!--验证手机号是否合法-->
+    let checkTel = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入手机号码'))
+      } else if (!this.checkMobile(value)) {
+        callback(new Error('手机号码不合法'))
+      } else {
+        callback()
+      }
+    };
+    // <!--验证密码-->
+    let checkPass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"))
+      } else if (!this.checkPassword(value)) {
+        callback(new Error('密码不合法'))
+      } else {
+        callback()
+      }
+    };
     return {
+      logining: false,
       logo_path,
-      name_path
-    }
+      name_path,
+      ruleForm: {
+        tel: '18813058359',
+        pass: '12345'
+      },
+      rules: {
+        tel: [
+          { validator: checkTel, trigger: 'change' },
+        ],
+        pass: [
+          { validator: checkPass, trigger: 'change' },
+        ]
+      },
+      //checked: true
+    };
   },
   methods: {
-    loginSubmit() {
-      this.$router.replace('/device')
+    //提交登录
+    msgLoginSubmit(ev) {
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            this.logining = true;
+            //NProgress.start();
+            let loginParams = {
+              "telephoneNum": this.ruleForm.tel,
+              "userPassword": this.ruleForm.pass
+            };
+              requestLogin(loginParams)
+                .then(data => {
+                  this.logining = false;
+                  //NProgress.done();
+                  if (data.code !== 100) {
+                    this.$message({
+                      message: data.message,
+                      type: 'error',
+                    });
+                  } else {
+                    setTimeout(() => {
+                      alert('登录成功')
+                    }, 400);
+                    sessionStorage.setItem('userId', JSON.stringify(data.content.userId));
+                    this.$router.push({path: '/device'});
+                  }
+                });
+          } else {
+              console.log('error submit!!');
+              return false;
+            }
+        });
+      },
+    // 验证手机号
+    checkMobile(str) {
+      let re = /^1\d{10}$/
+      if (re.test(str)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    // 验证密码4-8位
+    checkPassword(str) {
+      let re = /^.{4,8}$/
+      if (re.test(str)) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 }
@@ -69,7 +153,8 @@ body{
     overflow: hidden;
     position: absolute;
 }
-.el-row {
+.headline,
+.mainbody {
   margin-top: 35px;
   margin-bottom: 80px;
 }
@@ -86,9 +171,7 @@ body{
       width: 50%
 
 		}
-.el-form {
-  height: 400px;
-}
+
 .login-container {
     /* 处理圆角，W3C标准 */
     border-radius: 5px;
@@ -99,7 +182,7 @@ body{
     /* 规定背景的绘制区域 */
     background-clip: padding-box;
     width: 800px;
-    height: 550px;
+    height: 575px;
     padding: 35px 35px 15px 35px;
     background: rgba(0, 0, 0, .3);
     /* background: rgba(182, 175, 175, 0.3); */
@@ -111,29 +194,29 @@ body{
     left: 80px;
     top: 35px;
 }
-.login-container .title {
+.demo-ruleForm {
+  height: 500px;
+}
+.title {
     margin: 0px auto 40px auto;
     text-align: center;
     color: #FF9B1F;
 }
 .loginByMsg,
 .losepwd {
-    right:20px;
+  right:20px;
+  float: right;
 }
 .registerNow {
-    left: 80px;
+  left: 20px;
 }
-.el-link {
-    /* float: right; */
-    position: absolute;
-
-}
-.username,
+.tel,
 .password {
   margin: 80px 0px 80px 0px;
   color: #FF9B1F
 }
-/* .btn {
-  margin: 50px 220px;
-} */
+.btn {
+  margin: 15px 45% 35px 45%;
+}
+
 </style>
