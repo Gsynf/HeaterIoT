@@ -6,7 +6,7 @@ export function requestRegister(params) {
   return axios({
     // header:{'Content-Type':'application/x-www-form-urlencoded'},
     method: 'post',
-    url: '/register',
+    url: '/adminregister',
     data: Qs.stringify(params)
   })
 }
@@ -15,7 +15,7 @@ export function requestLogin(params) {
   return axios({
     // header:{'Content-Type':'application/x-www-form-urlencoded'},
     method: 'post',
-    url: '/tokens/login1',
+    url: '/admintokens/amdinlogin1',
     data: Qs.stringify(params)
   })
 }
@@ -24,7 +24,7 @@ export function requestMsgLogin(params) {
   return axios({
     // header:{'Content-Type':'application/x-www-form-urlencoded'},
     method: 'post',
-    url: '/tokens/login2',
+    url: '/admintokens/adminlogin2',
     data: Qs.stringify(params)
   })
 }
@@ -33,7 +33,7 @@ export function requestMsgLoginValidate(params) {
   return axios({
     // header:{'Content-Type':'application/x-www-form-urlencoded'},
     method: 'post',
-    url: '/msgvalidatelogin',
+    url: '/adminmsgvalidatelogin',
     data: Qs.stringify(params)
   })
 }
@@ -42,7 +42,7 @@ export function requestMsgValidate(params) {
   return axios({
     // header:{'Content-Type':'application/x-www-form-urlencoded'},
     method: 'post',
-    url: '/msgvalidate',
+    url: '/adminmsgvalidate',
     data: Qs.stringify(params)
   })
 }

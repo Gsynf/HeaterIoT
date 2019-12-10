@@ -89,9 +89,9 @@ export default {
     // <!--发送验证码-->
     sendCode () {
       let msgLoginParams = {
-        "telephoneNum": this.ruleForm2.tel,
+        "adminTelephoneNum": this.ruleForm2.tel,
       };
-      if (this.checkMobile(msgLoginParams.telephoneNum)) {
+      if (this.checkMobile(msgLoginParams.adminTelephoneNum)) {
         requestMsgLoginValidate(msgLoginParams)
           .then(data => {
             this.logining = false;
@@ -132,7 +132,7 @@ export default {
           this.logining = true;
           //NProgress.start();
           let loginParams = {
-            "telephoneNum": this.ruleForm2.tel,
+            "adminTelephoneNum": this.ruleForm2.tel,
             "smsCode": this.ruleForm2.smscode
           };
           requestMsgLogin(loginParams)

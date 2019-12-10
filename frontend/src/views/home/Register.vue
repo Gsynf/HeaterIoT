@@ -145,9 +145,9 @@ export default {
     // <!--发送验证码-->
     sendCode () {
       let msgRegisterParams = {
-        "telephoneNum": this.ruleForm3.tel,
+        "adminTelephoneNum": this.ruleForm3.tel,
       };
-      if (this.checkMobile(msgRegisterParams.telephoneNum)) {
+      if (this.checkMobile(msgRegisterParams.adminTelephoneNum)) {
         requestMsgValidate(msgRegisterParams)
           .then(data => {
             this.logining = false;
@@ -188,11 +188,11 @@ export default {
             this.logining = true;
             //NProgress.start();
             let registerParams = {
-              "userName": this.ruleForm3.username,
-              "telephoneNum": this.ruleForm3.tel,
+              "adminName": this.ruleForm3.username,
+              "adminTelephoneNum": this.ruleForm3.tel,
               "smsCode": this.ruleForm3.smscode,
-              "userPassword": this.ruleForm3.pass,
-              "userRight": 0
+              "adminPassword": this.ruleForm3.pass,
+              "adminRight": 0
             };
               requestRegister(registerParams)
                 .then(data => {

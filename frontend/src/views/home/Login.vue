@@ -72,7 +72,7 @@ export default {
       name_path,
       ruleForm: {
         tel: '18813058359',
-        pass: '12345'
+        pass: '123456'
       },
       rules: {
         tel: [
@@ -93,8 +93,8 @@ export default {
             this.logining = true;
             //NProgress.start();
             let loginParams = {
-              "telephoneNum": this.ruleForm.tel,
-              "userPassword": this.ruleForm.pass
+              "adminTelephoneNum": this.ruleForm.tel,
+              "adminPassword": this.ruleForm.pass
             };
               requestLogin(loginParams)
                 .then(data => {
@@ -110,7 +110,7 @@ export default {
                       alert('登录成功')
                     }, 400);
                     sessionStorage.setItem('userId', JSON.stringify(data.content.userId));
-                    this.$router.push({path: '/device'});
+                    this.$router.push({path: '/main'});
                   }
                 });
           } else {
