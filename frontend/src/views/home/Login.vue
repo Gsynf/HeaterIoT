@@ -109,7 +109,9 @@ export default {
                     setTimeout(() => {
                       alert('登录成功')
                     }, 400);
+                    sessionStorage.setItem('user',JSON.stringify(data));
                     sessionStorage.setItem('userId', JSON.stringify(data.content.userId));
+                    sessionStorage.setItem('token',JSON.stringify(data.content.userId+"_"+data.content.token));
                     this.$router.push({path: '/main'});
                   }
                 });

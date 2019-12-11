@@ -46,3 +46,11 @@ export function requestMsgValidate(params) {
     data: Qs.stringify(params)
   })
 }
+// 显示用户列表
+export function getUserList(params) {
+  return axios({
+    method: 'post',
+    url: '/users/list',
+    data: Qs.stringify(params)
+  })
+}

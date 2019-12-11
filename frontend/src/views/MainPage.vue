@@ -6,7 +6,7 @@
       </el-col>
       <el-col :span="10">
         <div class="tools" @click.prevent="collapse">
-          <i class="fa fa-align-justify"></i>
+          <i class="el-icon-menu"></i>
         </div>
       </el-col>
       <el-col :span="4" class="userinfo">
@@ -136,7 +136,6 @@
     },
     mounted() {
       let user = sessionStorage.getItem('userId');
-      console.log(user)
       if (user) {
         user = JSON.parse(user);    //解析JSON字符串
         this.sysUserName = user.name || '';
