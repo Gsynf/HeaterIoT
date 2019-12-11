@@ -8,6 +8,8 @@ const MsgLogin = () => import('views/home/MsgLogin.vue');
 const Register = () => import('views/home/Register.vue');
 const MainPage = () => import('views/MainPage.vue');
 const User =() => import('views/user/User.vue');
+const UserTable =() => import('views/user/UserTable.vue');
+const Echarts =() => import('views/charts/Echarts.vue')
 // 1.安装插件
 Vue.use(VueRouter);
 
@@ -43,7 +45,17 @@ const routes = [
     name: '用户列表',
     iconCls: 'el-icon-s-custom',
     children: [
-      { path: '/main/user', component: User, name: '列表' },
+      { path: '/main/userlist', component: User, name: '列表' },
+      { path: '/main/userpage', component: UserTable, name: '分页' },
+    ]
+  },
+  {
+    path: '/main',
+    component: MainPage,
+    name: '运行数据',
+    iconCls: 'el-icon-s-custom',
+    children: [
+      { path: '/main/charts', component: Echarts, name: '数据' },
     ]
   },
   {

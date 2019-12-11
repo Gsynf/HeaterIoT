@@ -54,3 +54,11 @@ export function getUserList(params) {
     data: Qs.stringify(params)
   })
 }
+// 显示用户列表
+export function getUserListPage(params) {
+  return axios({
+    method: 'post',
+    url: '/users/listpage',
+    data: Qs.stringify(params)
+  })
+}

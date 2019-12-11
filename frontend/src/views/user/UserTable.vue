@@ -4,7 +4,7 @@
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
 			<el-form :inline="true" :model="filters">
 				<el-form-item>
-					<el-input v-model="filters.name" placeholder="姓名"></el-input>
+					<el-input v-model="filters.tel" placeholder="手机号码"></el-input>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" v-on:click="getUsers">查询</el-button>
@@ -21,16 +21,18 @@
 			</el-table-column>
 			<el-table-column type="index" width="60">
 			</el-table-column>
-			<el-table-column prop="name" label="姓名" width="120" sortable>
-			</el-table-column>
-			<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" sortable>
-			</el-table-column>
-			<el-table-column prop="age" label="年龄" width="100" sortable>
-			</el-table-column>
-			<el-table-column prop="birth" label="生日" width="120" sortable>
-			</el-table-column>
-			<el-table-column prop="addr" label="地址" min-width="180" sortable>
-			</el-table-column>
+      <el-table-column prop="userId" label="用户ID" width="120" sortable>
+      </el-table-column>
+      <el-table-column prop="userName" label="用户名" width="200" sortable>
+      </el-table-column>
+      <el-table-column prop="telephoneNum" label="手机号码" width="200" sortable>
+      </el-table-column>
+      <el-table-column prop="deviceId" label="设备" width="200" sortable>
+      </el-table-column>
+      <el-table-column prop="registerTime" label="注册时间" width="200" sortable>
+      </el-table-column>
+      <el-table-column prop="userPassword" label="密码（已加密）" width="500">
+      </el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
 					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -105,15 +107,15 @@
 </template>
 
 <script>
-	import util from '../../common/js/util'
+	import util from '../../common/utils'
 	//import NProgress from 'nprogress'
-	import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api';
+  import {getUserListPage, removeUser, batchRemoveUser, editUser, addUser, getUserList} from '../../network/api';
 
 	export default {
 		data() {
 			return {
 				filters: {
-					name: ''
+					tel: ''
 				},
 				users: [],
 				total: 0,
@@ -157,10 +159,6 @@
 			}
 		},
 		methods: {
-			//性别显示转换
-			formatSex: function (row, column) {
-				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
-			},
 			handleCurrentChange(val) {
 				this.page = val;
 				this.getUsers();
@@ -169,16 +167,22 @@
 			getUsers() {
 				let para = {
 					page: this.page,
-					name: this.filters.name
+          inputTelephoneNum: this.filters.tel,
+          token: sessionStorage.getItem("token")
 				};
 				this.listLoading = true;
 				//NProgress.start();
-				getUserListPage(para).then((res) => {
-					this.total = res.data.total;
-					this.users = res.data.users;
-					this.listLoading = false;
-					//NProgress.done();
-				});
+        // 目前分页显示采用SQL分页查询的方式，因此每次请求都要把当前页数传入，所以查询只能在第一页查询
+        // 改进方法：不使用getUserList获得total，getUserListPage中查询所有，然后按照页数返回对应一部分
+        getUserList(para).then (data => {   //先获得所有用户的数目total，用于分页
+          this.total = data.length;
+          getUserListPage(para).then(data => {
+            this.users = data;
+            this.listLoading = false;
+            //NProgress.done();
+          });
+        });
+
 			},
 			//删除
 			handleDel: function (index, row) {

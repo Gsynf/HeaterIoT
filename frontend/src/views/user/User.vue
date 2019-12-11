@@ -29,7 +29,6 @@
         </el-table-column>
         <el-table-column prop="userPassword" label="密码（已加密）" min-width="800">
         </el-table-column>
-
       </el-table>
     </template>
 
