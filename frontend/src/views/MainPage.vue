@@ -1,4 +1,5 @@
 <template>
+  <div v-title data-title="主页 | 瀚游于青山绿水">
   <el-row class="container">
     <el-col :span="24" class="header">
       <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
@@ -81,6 +82,7 @@
       </section>
     </el-col>
   </el-row>
+  </div>
 </template>
 
 <script>

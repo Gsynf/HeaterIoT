@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-title data-title="注册 | 瀚游于青山绿水">
     <el-row type="flex" justify="center" class="headline">
       <el-col :span="12" class="logo">
 		      <el-image :src="logo_path" alt=""></el-image>
