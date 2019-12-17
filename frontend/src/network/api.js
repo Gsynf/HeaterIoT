@@ -62,3 +62,27 @@ export function getUserListPage(params) {
     data: Qs.stringify(params)
   })
 }
+// 显示设备列表
+export function getDeviceShowList(params) {
+  return axios({
+    method: 'post',
+    url: '/admindeviceshow',
+    data: Qs.stringify(params)
+  })
+}
+// 显示设备设置
+export function getDeviceSetting(params) {
+  return axios({
+    method: 'post',
+    url: '/devicesetting',
+    data: Qs.stringify(params)
+  })
+}
+editDevice
+export function editDevice(params) {
+  return axios({
+    method: 'post',
+    url: '/editdevice',
+    data: Qs.stringify(params)
+  })
+}

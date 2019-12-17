@@ -23,9 +23,9 @@
 			</el-table-column>
       <el-table-column prop="userId" label="用户ID" width="120" sortable>
       </el-table-column>
-      <el-table-column prop="userName" label="用户名" width="200" sortable>
+      <el-table-column prop="userName" label="用户名" width="150" sortable>
       </el-table-column>
-      <el-table-column prop="telephoneNum" label="手机号码" width="200" sortable>
+      <el-table-column prop="telephoneNum" label="手机号码" width="150" sortable>
       </el-table-column>
       <el-table-column prop="deviceId" label="设备" width="200" sortable>
       </el-table-column>
