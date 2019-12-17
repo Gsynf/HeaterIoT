@@ -46,6 +46,14 @@ export function requestMsgValidate(params) {
     data: Qs.stringify(params)
   })
 }
+// 登录成功后获取管理员信息
+export function getAdminInfo(params) {
+  return axios({
+    method: 'post',
+    url: '/admininfo',
+    data: Qs.stringify(params)
+  })
+}
 // 显示用户列表
 export function getUserList(params) {
   return axios({
@@ -78,7 +86,7 @@ export function getDeviceSetting(params) {
     data: Qs.stringify(params)
   })
 }
-editDevice
+// 设备设置
 export function editDevice(params) {
   return axios({
     method: 'post',

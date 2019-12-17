@@ -86,12 +86,14 @@
 </template>
 
 <script>
+  import { getAdminInfo } from '../network/api';
+
   export default {
     data() {
       return {
         sysName: '瀚 清 科 技',
         collapsed: false,
-        sysUserName: '胡鹏飞',
+        sysUserName: '',
         sysUserAvatar: require('assets/img/user.jpg'),
         form: {
           name: '',
@@ -106,9 +108,6 @@
       }
     },
     methods: {
-      onSubmit() {
-        console.log('submit!');
-      },
       handleopen() {
         //console.log('handleopen');
       },
@@ -137,12 +136,12 @@
       }
     },
     mounted() {
-      let user = sessionStorage.getItem('userId');
-      if (user) {
-        user = JSON.parse(user);    //解析JSON字符串
-        this.sysUserName = user.name || '';
-        //this.sysUserAvatar = user.avatar || '';
-      }
+      let para = {
+        token: sessionStorage.getItem("token")
+      };
+      getAdminInfo(para).then(data => {
+        this.sysUserName = data.message.adminName || '';
+      });
     }
   }
 </script>

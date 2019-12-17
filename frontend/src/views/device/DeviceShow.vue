@@ -7,7 +7,7 @@
           <el-input v-model="filters.deviceId" placeholder="设备编号"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" v-on:click="getUsers">查询</el-button>
+          <el-button type="primary" v-on:click="getDeviceShows">查询</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -168,10 +168,10 @@
     methods: {
       handleCurrentChange(val) {
         this.page = val;
-        this.getUsers();
+        this.getDeviceShows();
       },
       //获取设备展示列表
-      getUsers() {
+      getDeviceShows() {
         let para = {
           deviceId: this.filters.deviceId,
           token: sessionStorage.getItem("token")
@@ -199,7 +199,7 @@
               message: '删除成功',
               type: 'success'
             });
-            this.getUsers();
+            this.getDeviceShows();
           });
         }).catch(() => {
 
@@ -237,7 +237,7 @@
                 });
                 //this.$refs['editForm'].resetFields();
                 this.editFormVisible = false;
-                //this.getUsers();
+                //this.getDeviceShows();
               });
             });
           }
@@ -262,7 +262,7 @@
               message: '删除成功',
               type: 'success'
             });
-            this.getUsers();
+            this.getDeviceShows();
           });
         }).catch(() => {
 
@@ -270,7 +270,7 @@
       }
     },
     mounted() {
-      this.getUsers();
+      this.getDeviceShows();
     }
   }
 
