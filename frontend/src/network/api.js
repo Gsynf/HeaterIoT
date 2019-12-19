@@ -74,7 +74,7 @@ export function getUserListPage(params) {
 export function getDeviceShowList(params) {
   return axios({
     method: 'post',
-    url: '/admindeviceshow',
+    url: '/deviceshowinfo',
     data: Qs.stringify(params)
   })
 }

@@ -1,5 +1,5 @@
 <template>
-  <div v-title data-title="短信登录 | 瀚游于青山绿水">
+  <div class="msgloginpage" v-title data-title="短信登录 | 瀚游于青山绿水">
     <el-row type="flex" justify="center" class="headline">
       <el-col :span="12" class="logo">
 		      <el-image :src="logo_path" alt=""></el-image>
@@ -149,7 +149,7 @@ export default {
                   alert('登录成功')
                 }, 400);
                 sessionStorage.setItem('userId', JSON.stringify(data.content.userId));
-                this.$router.push({ path: '/device' });
+                this.$router.push({ path: '/main' });
               }
             });
         } else {
@@ -181,22 +181,30 @@ export default {
 </script>
 
 <style>
-body{
-    background-image: url(~assets/img/home/bg.jpg);
-    background-repeat: no-repeat;
-    /* 平铺 */
-    background-size: cover;
-    /* 当页面的其余部分滚动时，背景图像不会移动 */
-    background-attachment: fixed;
-    margin: 0px;
-    padding: 0px;
-    /* 当内容溢出元素框时,内容会被修剪,并且其余内容是不可见的 */
-    overflow: hidden;
-    position: absolute;
+html,body,#app {
+  height: 100%;
+  width: 100%;
 }
+.msgloginpage{
+  background-image: url(~assets/img/home/bg.jpg);
+  /*图片不重复*/
+  background-repeat: no-repeat;
+  /* 平铺，让背景图基于容器大小伸缩  */
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  /* !* 当内容溢出元素框时,内容会被修剪,并且其余内容是不可见的 *!*/
+  /* !*overflow: hidden;*!*/
+  /* !*position: absolute;*!*/
+  height: 100%;
+  width: 100%;
+  min-height: 700px;
+  min-width: 1000px;
+  }
 .headline {
-  margin-top: 35px;
-  margin-bottom: 30px;
+  padding-top: 35px;
+  padding-bottom: 30px;
 }
 .logo {
       width: 15%
@@ -204,7 +212,10 @@ body{
 .name {
       width: 50%
 		}
-
+/*解决ie浏览器headline只显示一部分的问题*/
+.el-image__inner--center {
+  transform: translate(-50%,0%);
+}
 .login-container {
     /* 处理圆角，W3C标准 */
     border-radius: 5px;
@@ -215,7 +226,8 @@ body{
     /* 规定背景的绘制区域 */
     background-clip: padding-box;
     width: 800px;
-    height: 600px;
+    height: 440px;
+    margin-top: 50px;
     padding: 35px 35px 15px 35px;
     background: rgba(0, 0, 0, .3);
     /* background: rgba(182, 175, 175, 0.3); */
@@ -225,13 +237,12 @@ body{
     /* 子绝父相 */
     position: relative;
     left: 80px;
-    top: 35px;
 }
 .demo-ruleForm {
-  height: 500px;
+  height: 400px;
 }
 .title {
-    margin: 0px auto 40px auto;
+    margin: 0px auto 10px auto;
     text-align: center;
     color: #FF9B1F;
 }
@@ -243,13 +254,10 @@ body{
   float: right;
 }
 .tel {
-  margin: 80px 0px 80px 0px;
   color: #FF9B1F
 }
 .code {
-  margin: 80px 0px 80px 0px;
   color: #FF9B1F;
-  bottom: 50px;
 }
 
 .code input {
@@ -266,7 +274,8 @@ body{
 }
 
 .btn {
-  margin: -5px 45% 40px 45%;
+  /*margin: -5px 45% 40px 45%;*/
+  margin: 15px 45% 25px 45%;
 }
 
 </style>

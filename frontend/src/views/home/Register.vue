@@ -1,5 +1,5 @@
 <template>
-  <div v-title data-title="注册 | 瀚游于青山绿水">
+  <div class="registerpage" v-title data-title="注册 | 瀚游于青山绿水">
     <el-row type="flex" justify="center" class="headline">
       <el-col :span="12" class="logo">
 		      <el-image :src="logo_path" alt=""></el-image>
@@ -257,30 +257,41 @@ export default {
 </script>
 
 <style>
-body{
-    background-image: url(~assets/img/home/bg.jpg);
-    background-repeat: no-repeat;
-    /* 平铺 */
-    background-size: cover;
-    /* 当页面的其余部分滚动时，背景图像不会移动 */
-    background-attachment: fixed;
-    margin: 0px;
-    padding: 0px;
-    /* 当内容溢出元素框时,内容会被修剪,并且其余内容是不可见的 */
-    overflow: hidden;
-    position: absolute;
+html,body,#app {
+  height: 100%;
+  width: 100%;
+}
+.registerpage{
+  background-image: url(~assets/img/home/bg.jpg);
+  /*图片不重复*/
+  background-repeat: no-repeat;
+  /* 平铺，让背景图基于容器大小伸缩  */
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  /* !* 当内容溢出元素框时,内容会被修剪,并且其余内容是不可见的 *!*/
+  /* !*overflow: hidden;*!*/
+  /* !*position: absolute;*!*/
+  height: 100%;
+  width: 100%;
+  min-height: 900px;
+  min-width: 1000px;
 }
 .headline {
-  margin-top: 35px;
-  margin-bottom: 30px;
+  padding-top: 35px;
+  padding-bottom: 30px;
 }
 .logo {
       width: 15%
 		}
 .name {
       width: 50%
-
 		}
+/*解决ie浏览器headline只显示一部分的问题*/
+.el-image__inner--center {
+  transform: translate(-50%,0%);
+}
 .login-container {
     /* 处理圆角，W3C标准 */
     border-radius: 5px;
@@ -301,13 +312,12 @@ body{
     /* 子绝父相 */
     position: relative;
     left: 80px;
-    top: 35px;
 }
 .demo-ruleForm {
   height: 550px;
 }
 .title {
-    margin: 0px auto 20px auto;
+    margin: 0px auto 10px auto;
     text-align: center;
     color: #FF9B1F;
 }

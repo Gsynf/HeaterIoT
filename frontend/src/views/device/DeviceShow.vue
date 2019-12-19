@@ -180,6 +180,7 @@
         //NProgress.start();
         getDeviceShowList(para).then (data => {
           this.deviceShowInfo = data.message;
+          console.log(data.message)
           this.listLoading = false;
           //NProgress.done();
         });
