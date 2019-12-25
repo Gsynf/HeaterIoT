@@ -18,7 +18,7 @@
           label-position="right"
           label-width="80px">
             <h3 class="title">欢迎注册</h3>
-            <el-link href="/login" class="backlogin" type="primary">返回密码登录</el-link>
+            <el-link href="/heater/login" class="backlogin" type="primary">返回密码登录</el-link>
             <el-form-item  class="username" prop="username" label="用户名">
               <el-input  v-model="ruleForm3.username" auto-complete="off" placeholder="请输入用户名（2-6位）"></el-input>
             </el-form-item>

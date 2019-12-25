@@ -90,7 +90,8 @@ const routes = [
 const router = new VueRouter({
     routes,
     // 设置为html的history模式
-    mode: 'history'
+    mode: 'history',
+    base: "/heater"
 });
 
 // 3.导出

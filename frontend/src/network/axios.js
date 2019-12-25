@@ -5,7 +5,8 @@ export default function axios(option) {
 	return new Promise((resolve, reject) => {
 		// 1.创建axios的实例
 		const instance = originAxios.create({
-			baseURL: 'http://192.168.108.102:8081',
+			// baseURL: 'http://123.56.121.205:8081',
+      baseURL: 'http://localhost:8081',
       timeout: 5000,
       withCredentials: false
 		});

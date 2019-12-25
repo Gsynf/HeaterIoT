@@ -18,15 +18,15 @@
           label-position="top"
           label-width="80px">
             <h3 class="title">系统登录</h3>
-            <el-link href="/msglogin" class="loginByMsg" type="primary">短信快捷登录</el-link>
+            <el-link href="/heater/msglogin" class="loginByMsg" type="primary">短信快捷登录</el-link>
             <el-form-item  class="tel" prop="tel" label="手机号码">
               <el-input  v-model="ruleForm.tel" auto-complete="off" placeholder="请输入您的手机号码"></el-input>
             </el-form-item>
             <el-form-item  class="password" prop="pass" label="密码">
               <el-input  v-model="ruleForm.pass" auto-complete="off" placeholder="请输入您的密码（4-8位）" show-password></el-input>
             </el-form-item>
-            <el-link href="/register" class="registerNow" type="primary" >没有账户？立即注册</el-link>
-            <el-link href="/losepwd" class="losepwd" type="primary">忘记密码？</el-link>
+            <el-link href="/heater/register" class="registerNow" type="primary" >没有账户？立即注册</el-link>
+            <el-link href="/heater/404" class="losepwd" type="primary">忘记密码？</el-link>
             <el-form-item>
               <el-button class="btn" type="primary"
                          @click.native.prevent="loginSubmit('ruleForm')" :loading="logining">登录</el-button>
@@ -162,8 +162,8 @@ html,body,#app {
   /* !*position: absolute;*!*/
    height: 100%;
    width: 100%;
-   min-height: 700px;
-   min-width: 1000px;
+  min-height: 700px;
+  min-width: 1000px;
 }
 
 .headline {

@@ -10,11 +10,11 @@
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
         <div class="bullshit__info">All rights reserved
-          <a style="color:#20a0ff" href="https://www.hanqing.com" target="_blank">hanqing</a>
+          <a style="color:#FF9B1F" href="https://www.hanqing.com" target="_blank">hanqing</a>
         </div>
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">Please check that the URL you entered is correct, or click the button below to return to the homepage.</div>
-        <a href="/login" class="bullshit__click-look-picture">Back to home</a>
+        <a href="/heater/login" class="bullshit__click-look-picture">Back to home</a>
         <a href="#" class="bullshit__return-home" @click.prevent="dialogVisible=true">Click me</a>
       </div>
     </div>
@@ -179,7 +179,7 @@ export default {
       font-size: 32px;
       font-weight: bold;
       line-height: 40px;
-      color: #1482f0;
+      color: #FF9B1F;
       opacity: 0;
       margin-bottom: 20px;
       animation-name: slideUp;
@@ -215,7 +215,7 @@ export default {
       float: left;
       width: 110px;
       height: 36px;
-      background: #1482f0;
+      background: #FF9B1F;
       border-radius: 100px;
       text-align: center;
       color: #ffffff;
@@ -239,5 +239,8 @@ export default {
       }
     }
   }
+}
+.el-dialog__wrapper {
+  height: 1000px;
 }
 </style>

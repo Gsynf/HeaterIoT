@@ -111,6 +111,120 @@
         <el-form-item label="一段模式功率" >
           <el-input-number v-model="editForm.power1" :min="1" :max="4"></el-input-number>
         </el-form-item>
+        <el-form-item label="二段模式起始" >
+          <el-time-picker v-model="editForm.startTime2" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`00:00:00 -${editForm.endTime2 ? editForm.endTime2+':00' : '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="二段模式结束" >
+          <el-time-picker v-model="editForm.endTime2" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`${editForm.startTime2 ? editForm.startTime2+':00' : '00:00:00'} - '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="二段模式温度" >
+          <el-slider v-model="editForm.temp2" show-input :min="1" :max="99"></el-slider>
+        </el-form-item>
+        <el-form-item label="二段模式温差" >
+          <el-input-number v-model="editForm.difference2" :min="0" :max="5"></el-input-number>
+        </el-form-item>
+        <el-form-item label="二段模式功率" >
+          <el-input-number v-model="editForm.power2" :min="1" :max="4"></el-input-number>
+        </el-form-item>
+        <el-form-item label="三段模式起始" >
+          <el-time-picker v-model="editForm.startTime3" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`00:00:00 -${editForm.endTime3 ? editForm.endTime3+':00' : '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="三段模式结束" >
+          <el-time-picker v-model="editForm.endTime3" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`${editForm.startTime3 ? editForm.startTime3+':00' : '00:00:00'} - '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="三段模式温度" >
+          <el-slider v-model="editForm.temp3" show-input :min="1" :max="99"></el-slider>
+        </el-form-item>
+        <el-form-item label="三段模式温差" >
+          <el-input-number v-model="editForm.difference3" :min="0" :max="5"></el-input-number>
+        </el-form-item>
+        <el-form-item label="三段模式功率" >
+          <el-input-number v-model="editForm.power3" :min="1" :max="4"></el-input-number>
+        </el-form-item>
+        <el-form-item label="四段模式起始" >
+          <el-time-picker v-model="editForm.startTime4" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`00:00:00 -${editForm.endTime4 ? editForm.endTime4+':00' : '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="四段模式结束" >
+          <el-time-picker v-model="editForm.endTime4" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`${editForm.startTime4 ? editForm.startTime4+':00' : '00:00:00'} - '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="四段模式温度" >
+          <el-slider v-model="editForm.temp4" show-input :min="1" :max="99"></el-slider>
+        </el-form-item>
+        <el-form-item label="四段模式温差" >
+          <el-input-number v-model="editForm.difference4" :min="0" :max="5"></el-input-number>
+        </el-form-item>
+        <el-form-item label="四段模式功率" >
+          <el-input-number v-model="editForm.power4" :min="1" :max="4"></el-input-number>
+        </el-form-item>
+        <el-form-item label="五段模式起始" >
+          <el-time-picker v-model="editForm.startTime5" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`00:00:00 -${editForm.endTime5 ? editForm.endTime5+':00' : '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="五段模式结束" >
+          <el-time-picker v-model="editForm.endTime5" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`${editForm.startTime5 ? editForm.startTime5+':00' : '00:00:00'} - '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="五段模式温度" >
+          <el-slider v-model="editForm.temp5" show-input :min="1" :max="99"></el-slider>
+        </el-form-item>
+        <el-form-item label="五段模式温差" >
+          <el-input-number v-model="editForm.difference5" :min="0" :max="5"></el-input-number>
+        </el-form-item>
+        <el-form-item label="五段模式功率" >
+          <el-input-number v-model="editForm.power5" :min="1" :max="4"></el-input-number>
+        </el-form-item>
+        <el-form-item label="六段模式起始" >
+          <el-time-picker v-model="editForm.startTime6" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`00:00:00 -${editForm.endTime6 ? editForm.endTime6+':00' : '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="六段模式结束" >
+          <el-time-picker v-model="editForm.endTime6" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`${editForm.startTime6 ? editForm.startTime6+':00' : '00:00:00'} - '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="六段模式温度" >
+          <el-slider v-model="editForm.temp6" show-input :min="1" :max="99"></el-slider>
+        </el-form-item>
+        <el-form-item label="六段模式温差" >
+          <el-input-number v-model="editForm.difference6" :min="0" :max="5"></el-input-number>
+        </el-form-item>
+        <el-form-item label="六段模式功率" >
+          <el-input-number v-model="editForm.power6" :min="1" :max="4"></el-input-number>
+        </el-form-item>
+        <el-form-item label="七段模式起始" >
+          <el-time-picker v-model="editForm.startTime7" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`00:00:00 -${editForm.endTime7 ? editForm.endTime7+':00' : '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="七段模式结束" >
+          <el-time-picker v-model="editForm.endTime7" format='HH:mm' value-format="HH:mm"
+                          :picker-options="{selectableRange:`${editForm.startTime7 ? editForm.startTime7+':00' : '00:00:00'} - '23:59:00'}`}">
+          </el-time-picker>
+        </el-form-item>
+        <el-form-item label="七段模式温度" >
+          <el-slider v-model="editForm.temp7" show-input :min="1" :max="99"></el-slider>
+        </el-form-item>
+        <el-form-item label="七段模式温差" >
+          <el-input-number v-model="editForm.difference7" :min="0" :max="5"></el-input-number>
+        </el-form-item>
+        <el-form-item label="七段模式功率" >
+          <el-input-number v-model="editForm.power7" :min="1" :max="4"></el-input-number>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="editFormVisible = false">取消</el-button>
@@ -161,6 +275,36 @@
           temp1: 0,
           difference1: 0,
           power1: 0,
+          startTime2: '',
+          endTime2: '',
+          temp2: 0,
+          difference2: 0,
+          power2: 0,
+          startTime3: '',
+          endTime3: '',
+          temp3: 0,
+          difference3: 0,
+          power3: 0,
+          startTime4: '',
+          endTime4: '',
+          temp4: 0,
+          difference4: 0,
+          power4: 0,
+          startTime5: '',
+          endTime5: '',
+          temp5: 0,
+          difference5: 0,
+          power5: 0,
+          startTime6: '',
+          endTime6: '',
+          temp6: 0,
+          difference6: 0,
+          power6: 0,
+          startTime7: '',
+          endTime7: '',
+          temp7: 0,
+          difference7: 0,
+          power7: 0,
         },
 
       }

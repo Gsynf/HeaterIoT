@@ -18,7 +18,7 @@
           label-position="top"
           label-width="80px">
             <h3 class="title">短信验证码登录</h3>
-            <el-link href="/login" class="backlogin" type="primary">返回密码登录</el-link>
+            <el-link href="/heater/login" class="backlogin" type="primary">返回密码登录</el-link>
             <el-form-item  class="tel" prop="tel" label="手机号码">
                 <el-input  v-model="ruleForm2.tel" auto-complete="off" placeholder="请输入您的手机号码"></el-input>
             </el-form-item>

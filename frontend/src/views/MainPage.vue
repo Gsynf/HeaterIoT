@@ -2,7 +2,7 @@
   <div v-title data-title="主页 | 瀚游于青山绿水">
   <el-row class="container">
     <el-col :span="24" class="header">
-      <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
+      <el-col :span="5" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
         {{collapsed?'':sysName}}
       </el-col>
       <el-col :span="10">
@@ -10,17 +10,27 @@
           <i class="el-icon-menu"></i>
         </div>
       </el-col>
-      <el-col :span="4" class="userinfo">
+      <el-col :span="5" class="userinfo">
+        <el-badge is-dot>
+          <el-button  @click="drawer = true" type="primary" icon="el-icon-message-solid"></el-button>
+        </el-badge>
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar"/> {{sysUserName}}</span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>我的消息</el-dropdown-item>
             <el-dropdown-item>设置</el-dropdown-item>
             <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-col>
     </el-col>
+    <!-- 消息抽屉-->
+    <el-drawer
+      title="消息通知"
+      :visible.sync="drawer"
+      :with-header="false">
+      <span>张三：我要报修</span>
+    </el-drawer>
+
     <el-col :span="24" class="main">
       <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
         <!--导航菜单-->
@@ -95,6 +105,7 @@
         collapsed: false,
         sysUserName: '',
         sysUserAvatar: require('assets/img/user.jpg'),
+        drawer: false,
         form: {
           name: '',
           region: '',
@@ -166,10 +177,24 @@
         padding-right: 35px;
         float: right;
 
+        .el-badge {
+          height: 30px;
+          width: 40px;
+          position: relative;
+          .el-button {
+            padding: 6px 10px;
+            /*按钮垂直居中*/
+            position:absolute;
+            left: 50px;
+            top: 50%;
+            margin: -14px 0 0 -36px;
+          }
+        }
+
         .userinfo-inner {
           cursor: pointer;
           color: #fff;
-
+          margin: 0 0 0 20px;
           img {
             width: 40px;
             height: 40px;
@@ -183,7 +208,7 @@
       .logo {
         //width:230px;
         height: 60px;
-        font-size: 22px;
+        font-size: 30px;
         padding-left: 20px;
         padding-right: 20px;
         border-color: rgba(238, 241, 146, 0.3);
