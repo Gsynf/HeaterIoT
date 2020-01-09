@@ -94,3 +94,11 @@ export function editDevice(params) {
     data: Qs.stringify(params)
   })
 }
+//激活设备
+export function editActiveDuration(params) {
+  return axios({
+    method: 'post',
+    url: '/editactiveduration',
+    data: Qs.stringify(params)
+  })
+}

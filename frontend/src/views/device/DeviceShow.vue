@@ -50,9 +50,10 @@
       </el-table-column>
       <el-table-column prop="ip" label="IP地址" width="100">
       </el-table-column>
-      <el-table-column label="操作" width="150">
+      <el-table-column label="操作" width="250">
         <template scope="scope">
           <el-button size="small" @click="handleEdit(scope.$index, scope.row)">设置</el-button>
+          <el-button type="success" size="small" @click="handleActivation(scope.$index, scope.row)">激活</el-button>
           <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -64,6 +65,22 @@
       <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
+
+    <!--激活界面-->
+    <el-dialog title="激活" :visible.sync="activeFormVisible" v-model="activeFormVisible" :close-on-click-modal="false">
+      <el-form :model="activeForm" label-width="100px" :rules="activeFormRules" ref="activeForm">
+        <el-form-item label="设备编号" >
+          <el-input v-model="activeForm.deviceId" auto-complete="off" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="激活天数" >
+          <el-input v-model="activeForm.activeDuration" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="activeFormVisible = false">取消</el-button>
+        <el-button type="primary" @click.native="activeSubmit" :loading="activeLoading">激活</el-button>
+      </div>
+    </el-dialog>
 
     <!--设置界面-->
     <el-dialog title="设置" :visible.sync="editFormVisible" v-model="editFormVisible" :close-on-click-modal="false">
@@ -231,14 +248,13 @@
         <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
       </div>
     </el-dialog>
-
   </section>
 </template>
 
 <script>
   import util from '../../common/utils'
   //import NProgress from 'nprogress'
-  import {getDeviceShowList,editDevice,getDeviceSetting} from '../../network/api';
+  import {getDeviceShowList,editDevice,getDeviceSetting,editActiveDuration} from '../../network/api';
 
   export default {
     data() {
@@ -254,11 +270,23 @@
 
         deviceSetting: [], //点击编辑按钮先请求回来的目前设置
         editFormVisible: false,//编辑界面是否显示
+        activeFormVisible: false,//激活界面是否显示
         editLoading: false,
+        activeLoading: false,
         editFormRules: {
           deviceId: [
             { required: true, message: '请输入设备编号', trigger: 'blur' }
           ]
+        },
+        activeFormRules: {
+          deviceId: [
+            { required: true, message: '请输入设备编号', trigger: 'blur' }
+          ]
+        },
+        //激活界面数据
+        activeForm: {
+          deviceId: '',
+          activeDuration: '',
         },
         //编辑界面数据
         editForm: {
@@ -348,6 +376,36 @@
           });
         }).catch(() => {
 
+        });
+      },
+      //显示激活界面
+      handleActivation: function (index, row) {
+        this.activeFormVisible = true;
+        this.activeForm.deviceId = Object.assign({}, row).deviceId;  //这一行的deviceId
+      },
+      //激活
+      activeSubmit: function () {
+        this.$refs.activeForm.validate((valid) => {
+          if (valid) {
+            this.$confirm('确认激活吗？', '提示', {}).then(() => {
+              this.activeLoading = true;
+              //NProgress.start();
+              this.activeForm.token = sessionStorage.getItem("token");  // 将token添加到参数列表中
+              let para = Object.assign({}, this.activeForm);
+              console.log(para)
+              editActiveDuration(para).then((res) => {
+                this.activeLoading = false;
+                //NProgress.done();
+                this.$message({
+                  message: '提交成功',
+                  type: 'success'
+                });
+                //this.$refs['editForm'].resetFields();
+                this.activeFormVisible = false;
+                //this.getDeviceShows();
+              });
+            });
+          }
         });
       },
       //显示编辑界面
