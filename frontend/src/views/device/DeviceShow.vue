@@ -22,11 +22,11 @@
       </el-table-column>
       <el-table-column prop="userId" label="用户Id" width="100" sortable>
       </el-table-column>
-      <el-table-column prop="nowTemp" label="温度" width="80" sortable>
+      <el-table-column prop="currentTemperature" label="温度" width="80" sortable>
       </el-table-column>
-      <el-table-column prop="nowHum" label="湿度" width="80" sortable>
+      <el-table-column prop="heatLevel" label="加热挡位" width="100" sortable>
       </el-table-column>
-      <el-table-column prop="nowMode" label="加热模式" width="100" sortable>
+      <el-table-column prop="workMode" label="加热模式" width="100" sortable>
       </el-table-column>
       <el-table-column prop="nowStatus" label="加热状态" width="100" sortable>
       </el-table-column>
@@ -44,12 +44,16 @@
       </el-table-column>
       <el-table-column prop="electricAlarm" label="漏电报警" width="100" sortable>
       </el-table-column>
-      <el-table-column prop="updateTime" label="上传时间" width="100" sortable>
+      <el-table-column prop="activation" label="激活类型" width="100" sortable>
       </el-table-column>
+      <el-table-column prop="isActivated" label="激活状态" width="100" sortable>
+      </el-table-column>
+<!--      <el-table-column prop="updateTime" label="上传时间" width="100" sortable>-->
+<!--      </el-table-column>-->
       <el-table-column prop="deviceAddress" label="设备地址" width="100" sortable>
       </el-table-column>
-      <el-table-column prop="ip" label="IP地址" width="100">
-      </el-table-column>
+<!--      <el-table-column prop="ip" label="IP地址" width="100">-->
+<!--      </el-table-column>-->
       <el-table-column label="操作" width="250">
         <template scope="scope">
           <el-button size="small" @click="handleEdit(scope.$index, scope.row)">设置</el-button>
@@ -101,7 +105,8 @@
           <el-input v-model="editForm.electricThreshold" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="自动模式温度" >
-          <el-slider v-model="editForm.autoTemp" show-input :min="1" :max="99"></el-slider>
+          <el-input-number v-model="editForm.autoTemp" :min="1" :max="99"></el-input-number>
+<!--          <el-slider v-model="editForm.autoTemp" show-input :min="1" :max="99"></el-slider>-->
         </el-form-item>
         <el-form-item label="自动模式温差" >
           <el-input-number v-model="editForm.autoDifference" :min="0" :max="5"></el-input-number>
@@ -120,7 +125,8 @@
           </el-time-picker>
         </el-form-item>
         <el-form-item label="一段模式温度" >
-          <el-slider v-model="editForm.temp1" show-input :min="1" :max="99"></el-slider>
+          <el-input-number v-model="editForm.temp1" :min="1" :max="99"></el-input-number>
+<!--          <el-slider v-model="editForm.temp1" show-input :min="1" :max="99"></el-slider>-->
         </el-form-item>
         <el-form-item label="一段模式温差" >
           <el-input-number v-model="editForm.difference1" :min="0" :max="5"></el-input-number>
@@ -139,7 +145,8 @@
           </el-time-picker>
         </el-form-item>
         <el-form-item label="二段模式温度" >
-          <el-slider v-model="editForm.temp2" show-input :min="1" :max="99"></el-slider>
+          <el-input-number v-model="editForm.temp2" :min="1" :max="99"></el-input-number>
+<!--          <el-slider v-model="editForm.temp2" show-input :min="1" :max="99"></el-slider>-->
         </el-form-item>
         <el-form-item label="二段模式温差" >
           <el-input-number v-model="editForm.difference2" :min="0" :max="5"></el-input-number>
@@ -158,7 +165,8 @@
           </el-time-picker>
         </el-form-item>
         <el-form-item label="三段模式温度" >
-          <el-slider v-model="editForm.temp3" show-input :min="1" :max="99"></el-slider>
+          <el-input-number v-model="editForm.temp3" :min="1" :max="99"></el-input-number>
+<!--          <el-slider v-model="editForm.temp3" show-input :min="1" :max="99"></el-slider>-->
         </el-form-item>
         <el-form-item label="三段模式温差" >
           <el-input-number v-model="editForm.difference3" :min="0" :max="5"></el-input-number>
@@ -177,7 +185,8 @@
           </el-time-picker>
         </el-form-item>
         <el-form-item label="四段模式温度" >
-          <el-slider v-model="editForm.temp4" show-input :min="1" :max="99"></el-slider>
+          <el-input-number v-model="editForm.temp4" :min="1" :max="99"></el-input-number>
+<!--          <el-slider v-model="editForm.temp4" show-input :min="1" :max="99"></el-slider>-->
         </el-form-item>
         <el-form-item label="四段模式温差" >
           <el-input-number v-model="editForm.difference4" :min="0" :max="5"></el-input-number>
@@ -196,7 +205,8 @@
           </el-time-picker>
         </el-form-item>
         <el-form-item label="五段模式温度" >
-          <el-slider v-model="editForm.temp5" show-input :min="1" :max="99"></el-slider>
+          <el-input-number v-model="editForm.temp5" :min="1" :max="99"></el-input-number>
+<!--          <el-slider v-model="editForm.temp5" show-input :min="1" :max="99"></el-slider>-->
         </el-form-item>
         <el-form-item label="五段模式温差" >
           <el-input-number v-model="editForm.difference5" :min="0" :max="5"></el-input-number>
@@ -215,7 +225,8 @@
           </el-time-picker>
         </el-form-item>
         <el-form-item label="六段模式温度" >
-          <el-slider v-model="editForm.temp6" show-input :min="1" :max="99"></el-slider>
+          <el-input-number v-model="editForm.temp6" :min="1" :max="99"></el-input-number>
+<!--          <el-slider v-model="editForm.temp6" show-input :min="1" :max="99"></el-slider>-->
         </el-form-item>
         <el-form-item label="六段模式温差" >
           <el-input-number v-model="editForm.difference6" :min="0" :max="5"></el-input-number>
@@ -234,7 +245,8 @@
           </el-time-picker>
         </el-form-item>
         <el-form-item label="七段模式温度" >
-          <el-slider v-model="editForm.temp7" show-input :min="1" :max="99"></el-slider>
+          <el-input-number v-model="editForm.temp7" :min="1" :max="99"></el-input-number>
+<!--          <el-slider v-model="editForm.temp7" show-input :min="1" :max="99"></el-slider>-->
         </el-form-item>
         <el-form-item label="七段模式温差" >
           <el-input-number v-model="editForm.difference7" :min="0" :max="5"></el-input-number>
@@ -351,6 +363,7 @@
         this.listLoading = true;
         //NProgress.start();
         getDeviceShowList(para).then (data => {
+          // console.log(data);
           this.deviceShowInfo = data.message;
           this.listLoading = false;
           //NProgress.done();
@@ -416,6 +429,7 @@
           token: sessionStorage.getItem("token")
         };
         getDeviceSetting(para).then (data => {
+          // console.log(data);
           this.deviceSetting = data.message;
           //NProgress.done();
           this.editForm = this.deviceSetting;
