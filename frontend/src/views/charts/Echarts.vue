@@ -55,7 +55,7 @@
                 this.chartBar.setOption({
                     title: {
                         text: '历史耗电统计',
-                        subtext: '数据纯属瞎编'
+                        subtext: '数据以真实数据为准'
                     },
                     tooltip: {
                         trigger: 'axis',
